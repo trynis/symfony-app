@@ -1,5 +1,16 @@
 # Symfony App - Web App
 
+## Description
+
+This app allows users to share their photos. 
+
+## Basic features
+- Homepage with photo galleries (photos contain number of likes)
+- Photos like/unlike
+- Login with access token
+- Logout
+- Profiles views
+
 ## Commands
 
 ### Database migration
