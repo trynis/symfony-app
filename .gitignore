@@ -3,3 +3,4 @@
 /.env.local
 /.phpunit.result.cache
 node_modules/
+/.idea/
