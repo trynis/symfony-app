@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace App\Domain\Like;
 
 use App\Domain\Photo\Photo;
+use App\Domain\User\User;
 
 interface LikeRepositoryInterface
 {
-    public function unlikePhoto(Photo $photo): void;
+    // better would be createLike(Like $like): Like;
+    public function createLike(Photo $photo, User $user): Like;
 
-    public function hasUserLikedPhoto(Photo $photo): bool;
+    public function removeLike(Photo $photo, User $user): void;
 
-    public function createLike(Photo $photo): Like;
+    public function hasLike(Photo $photo, User $user): bool;
 
-    public function updatePhotoCounter(Photo $photo, int $increment): void;
 }

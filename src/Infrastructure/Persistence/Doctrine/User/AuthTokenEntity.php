@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\User;
+namespace App\Infrastructure\Persistence\Doctrine\User;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'auth_tokens')]
-class AuthToken
+class AuthTokenEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,9 +18,9 @@ class AuthToken
     #[ORM\Column(type: 'string', length: 255)]
     private string $token;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: UserEntity::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private User $user;
+    private UserEntity $user;
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
@@ -46,12 +46,12 @@ class AuthToken
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): UserEntity
     {
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(UserEntity $user): self
     {
         $this->user = $user;
         return $this;

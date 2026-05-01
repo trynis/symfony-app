@@ -1,69 +1,40 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Domain\Like;
 
-use App\Domain\Photo\Photo;
-use App\Domain\User\User;
-use App\Infrastructure\Persistence\DoctrineLikeRepository;
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: DoctrineLikeRepository::class)]
-#[ORM\Table(name: 'likes')]
 class Like
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private User $user;
-
-    #[ORM\ManyToOne(targetEntity: Photo::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private Photo $photo;
-
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $createdAt;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
+    public function __construct(
+        private readonly int $userId,
+        private readonly int $photoId,
+    ) {
     }
 
-    public function getUser(): User
+    public static function create(int $userId, int $photoId): self
     {
-        return $this->user;
+        return new self($userId, $photoId);
     }
 
-    public function setUser(User $user): self
+    public function id(): int
     {
-        $this->user = $user;
-        return $this;
+        return $this->id;
     }
 
-    public function getPhoto(): Photo
+    public function setId(int $id): void
     {
-        return $this->photo;
+        $this->id = $id;
     }
 
-    public function setPhoto(Photo $photo): self
+    public function userId(): int
     {
-        $this->photo = $photo;
-        return $this;
+        return $this->userId;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function photoId(): int
     {
-        return $this->createdAt;
+        return $this->photoId;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
 }

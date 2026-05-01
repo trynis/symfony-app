@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\UI\Cli;
 
-use App\Domain\Photo\Photo;
-use App\Domain\User\AuthToken;
-use App\Domain\User\User;
+use App\Infrastructure\Persistence\Doctrine\Photo\PhotoEntity;
+use App\Infrastructure\Persistence\Doctrine\User\AuthTokenEntity;
+use App\Infrastructure\Persistence\Doctrine\User\UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -70,7 +70,7 @@ class SeedDatabaseCommand extends Command
 
         $users = [];
         foreach ($usersData as $userData) {
-            $user = new User();
+            $user = new UserEntity();
             $user->setUsername($userData['username'])
                 ->setEmail($userData['email'])
                 ->setName($userData['name'])
@@ -89,7 +89,7 @@ class SeedDatabaseCommand extends Command
         // Create auth tokens for each user
         foreach ($users as $user) {
             $token = bin2hex(random_bytes(32));
-            $authToken = new AuthToken();
+            $authToken = new AuthTokenEntity();
             $authToken->setToken($token)
                 ->setUser($user);
 
@@ -201,7 +201,7 @@ class SeedDatabaseCommand extends Command
         ];
 
         foreach ($photosData as $photoData) {
-            $photo = new Photo();
+            $photo = new PhotoEntity();
             $photo->setImageUrl($photoData['imageUrl'])
                 ->setLocation($photoData['location'])
                 ->setDescription($photoData['description'])

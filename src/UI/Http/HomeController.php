@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\UI\Http;
 
-use App\Domain\User\User;
-use App\Infrastructure\Persistence\DoctrineLikeRepository;
+use App\Infrastructure\Persistence\Doctrine\Like\DoctrineLikeRepository;
+use App\Infrastructure\Persistence\Doctrine\Photo\DoctrinePhotoRepository;
+use App\Infrastructure\Persistence\Doctrine\User\UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use DoctrinePhotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ class HomeController extends AbstractController
         $userLikes = [];
 
         if ($userId) {
-            $currentUser = $em->getRepository(User::class)->find($userId);
+            $currentUser = $em->getRepository(UserEntity::class)->find($userId);
 
             if ($currentUser) {
                 foreach ($photos as $photo) {

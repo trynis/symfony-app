@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Http\User;
 
-use App\Domain\User\User;
+use App\Infrastructure\Persistence\Doctrine\User\UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class ShowProfileController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $user = $em->getRepository(User::class)->find($userId);
+        $user = $em->getRepository(UserEntity::class)->find($userId);
 
         if (!$user) {
             $session->clear();

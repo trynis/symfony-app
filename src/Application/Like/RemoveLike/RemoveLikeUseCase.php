@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Like\CreateLike;
+namespace App\Application\Like\RemoveLike;
 
-use App\Application\Like\CreateLike\Exception\AlreadyLikedException;
-use App\Application\Like\CreateLike\Exception\PhotoNotFoundException;
-use App\Application\Like\CreateLike\Exception\UserNotFoundException;
+use App\Application\Like\RemoveLike\Exception\LikeNotFoundException;
+use App\Application\Like\RemoveLike\Exception\PhotoNotFoundException;
+use App\Application\Like\RemoveLike\Exception\UserNotFoundException;
 use App\Domain\Like\LikeRepositoryInterface;
 use App\Domain\Photo\PhotoRepositoryInterface;
 use App\Domain\User\UserRepositoryInterface;
 
-class CreateLikeUseCase
+class RemoveLikeUseCase
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
@@ -19,7 +19,7 @@ class CreateLikeUseCase
         private readonly PhotoRepositoryInterface $photoRepository,
     ) {}
 
-    public function execute(CreateLikeCommand $command): void
+    public function execute(RemoveLikeCommand $command): void
     {
         $user = $this->userRepository->getById($command->userId);
 
@@ -36,10 +36,9 @@ class CreateLikeUseCase
 
         if ($this->likeRepository->hasLike($photo, $user))
         {
-            throw new AlreadyLikedException();
+            throw new LikeNotFoundException();
         }
-
-        $this->likeRepository->createLike($photo, $user);
-        $this->photoRepository->increaseLikeCounter($photo);
+        $this->likeRepository->removeLike($photo, $user);
+        $this->photoRepository->decreaseLikeCounter($photo);
     }
 }
