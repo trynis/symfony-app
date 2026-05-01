@@ -6,15 +6,15 @@ class Like
 {
 
     public function __construct(
-        private readonly ?int $id = null,
         private readonly int $userId,
         private readonly int $photoId,
+        private readonly ?int $id = null,
     ) {
     }
 
     public static function create(int $userId, int $photoId): self
     {
-        return new self(null, $userId, $photoId);
+        return new self($userId, $photoId);
     }
 
     public function id(): ?int
