@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\UI\Http\User;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AuthController extends AbstractController
+class LoginUserController extends AbstractController
 {
     #[Route('/auth/{username}/{token}', name: 'auth_login')]
     public function login(string $username, string $token, Connection $connection, Request $request): Response

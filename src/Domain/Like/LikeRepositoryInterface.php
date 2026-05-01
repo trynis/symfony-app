@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Likes;
+namespace App\Domain\Like;
 
-use App\Entity\Photo;
+use App\Domain\Photo\Photo;
 
 interface LikeRepositoryInterface
 {

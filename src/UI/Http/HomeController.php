@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\UI\Http;
 
-use App\Entity\User;
-use App\Likes\LikeRepository;
-use App\Repository\PhotoRepository;
+use App\Domain\User\User;
+use App\Infrastructure\Persistence\DoctrineLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use DoctrinePhotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
@@ -23,8 +22,8 @@ class HomeController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $em, ManagerRegistry $managerRegistry): Response
     {
-        $photoRepository = new PhotoRepository($managerRegistry);
-        $likeRepository = new LikeRepository($managerRegistry);
+        $photoRepository = new DoctrinePhotoRepository($managerRegistry);
+        $likeRepository = new DoctrineLikeRepository($managerRegistry);
 
         $photos = $photoRepository->findAllWithUsers();
 

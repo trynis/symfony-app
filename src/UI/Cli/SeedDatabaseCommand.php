@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Command;
+namespace App\UI\Cli;
 
-use App\Entity\AuthToken;
-use App\Entity\Photo;
-use App\Entity\User;
+use App\Domain\Photo\Photo;
+use App\Domain\User\AuthToken;
+use App\Domain\User\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

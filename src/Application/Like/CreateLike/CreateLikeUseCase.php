@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Likes;
+namespace App\Application\Like\CreateLike;
 
-use App\Entity\Photo;
-use App\Entity\User;
+use App\Domain\Like\LikeRepositoryInterface;
+use App\Domain\Photo\Photo;
 
-class LikeService
+class CreateLikeUseCase
 {
     public function __construct(
         private LikeRepositoryInterface $likeRepository

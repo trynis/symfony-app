@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Likes;
+namespace App\Infrastructure\Persistence;
 
-use App\Entity\Photo;
-use App\Entity\User;
+use App\Domain\Like\Like;
+use App\Domain\Like\LikeRepositoryInterface;
+use App\Domain\Photo\Photo;
+use App\Domain\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class LikeRepository extends ServiceEntityRepository implements LikeRepositoryInterface
+final class DoctrineLikeRepository extends ServiceEntityRepository implements LikeRepositoryInterface
 {
     private ?User $user;
 
