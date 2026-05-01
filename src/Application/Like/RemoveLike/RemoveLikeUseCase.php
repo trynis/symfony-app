@@ -38,6 +38,8 @@ class RemoveLikeUseCase
         {
             throw new LikeNotFoundException();
         }
+
+        // transaction required
         $this->likeRepository->removeLike($photo, $user);
         $this->photoRepository->decreaseLikeCounter($photo);
     }

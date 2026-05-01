@@ -39,6 +39,7 @@ class CreateLikeUseCase
             throw new AlreadyLikedException();
         }
 
+        // transaction required
         $this->likeRepository->createLike($photo, $user);
         $this->photoRepository->increaseLikeCounter($photo);
     }
