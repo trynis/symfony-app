@@ -17,16 +17,9 @@ use Doctrine\Persistence\ManagerRegistry;
 
 final class DoctrineLikeRepository extends ServiceEntityRepository
 {
-    private ?UserEntity $user;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LikeEntity::class);
-    }
-
-    public function setUser(?UserEntity $user): void
-    {
-        $this->user = $user;
     }
 
     public function getLike(Photo $photo, User $user): ?Like
@@ -47,20 +40,21 @@ final class DoctrineLikeRepository extends ServiceEntityRepository
 
     public function removeLike(Like $like): void
     {
-        $this->getEntityManager()->remove(LikeMapper::fromDomain($like));
+        $likeEntity = $this->find($like->id());
+        $this->getEntityManager()->remove($likeEntity);
         $this->getEntityManager()->flush();
     }
 
     public function getLikes(Photo $photo, User $user): array
     {
         $entities = $this->createQueryBuilder('l')
-            ->select('l.id')
+            ->select('l')
             ->where('l.user = :user')
             ->andWhere('l.photo = :photo')
-            ->setParameter('user', $this->user)
-            ->setParameter('photo', $photo)
+            ->setParameter('user', UserMapper::fromDomain($user))
+            ->setParameter('photo', PhotoMapper::fromDomain($photo))
             ->getQuery()
-            ->getArrayResult();
+            ->getResult();
 
         return array_map(
             fn(LikeEntity $like) => LikeMapper::toDomain($like),
@@ -68,14 +62,13 @@ final class DoctrineLikeRepository extends ServiceEntityRepository
         );
     }
 
-    #[\Override]
-    public function hasUserLikedPhoto(PhotoEntity $photo): bool
+    public function hasUserLikedPhoto(PhotoEntity $photo, UserEntity $user): bool
     {
         $likes = $this->createQueryBuilder('l')
             ->select('l.id')
             ->where('l.user = :user')
             ->andWhere('l.photo = :photo')
-            ->setParameter('user', $this->user)
+            ->setParameter('user', $user)
             ->setParameter('photo', $photo)
             ->getQuery()
             ->getArrayResult();
@@ -83,12 +76,19 @@ final class DoctrineLikeRepository extends ServiceEntityRepository
         return count($likes) > 0;
     }
 
-    #[\Override]
     public function createLike(Photo $photo, User $user): Like
     {
         $entity = new LikeEntity();
-        $entity->setUser(UserMapper::fromDomain($user));
-        $entity->setPhoto(PhotoMapper::fromDomain($photo));
+        $userEntity = $this->getEntityManager()->getReference(
+            UserEntity::class,
+            $user->id(),
+        );
+        $photoEntity = $this->getEntityManager()->getReference(
+            PhotoEntity::class,
+            $photo->id(),
+        );
+        $entity->setUser($userEntity);
+        $entity->setPhoto($photoEntity);
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -97,12 +97,23 @@ final class DoctrineLikeRepository extends ServiceEntityRepository
         return LikeMapper::toDomain($entity);
     }
 
-    #[\Override]
     public function updatePhotoCounter(PhotoEntity $photo, int $increment): void
     {
         $em = $this->getEntityManager();
         $photo->setLikeCounter($photo->getLikeCounter() + $increment);
         $em->persist($photo);
         $em->flush();
+    }
+
+    public function getById(int $id): ?Like
+    {
+        $entity = $this->find($id);
+
+        if ($entity)
+        {
+            return LikeMapper::toDomain($entity);
+        }
+
+        return null;
     }
 }

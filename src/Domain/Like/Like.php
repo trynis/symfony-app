@@ -4,9 +4,9 @@ namespace App\Domain\Like;
 
 class Like
 {
-    private int $id;
 
     public function __construct(
+        private readonly ?int $id = null,
         private readonly int $userId,
         private readonly int $photoId,
     ) {
@@ -14,10 +14,10 @@ class Like
 
     public static function create(int $userId, int $photoId): self
     {
-        return new self($userId, $photoId);
+        return new self(null, $userId, $photoId);
     }
 
-    public function id(): int
+    public function id(): ?int
     {
         return $this->id;
     }

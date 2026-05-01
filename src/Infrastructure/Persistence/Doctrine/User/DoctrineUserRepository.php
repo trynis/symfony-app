@@ -22,7 +22,7 @@ class DoctrineUserRepository extends ServiceEntityRepository
 
         if ($entity)
         {
-            UserMapper::toDomain($entity);
+            return UserMapper::toDomain($entity);
         }
 
         return null;

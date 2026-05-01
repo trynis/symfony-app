@@ -39,8 +39,9 @@ class UserEntity
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PhotoEntity::class, cascade: ['persist', 'remove'])]
     private Collection $photos;
 
-    public function __construct()
+    public function __construct(?int $id = null)
     {
+        $this->id = $id;
         $this->photos = new ArrayCollection();
     }
 

@@ -34,7 +34,7 @@ class RemoveLikeUseCase
             throw new PhotoNotFoundException();
         }
 
-        if ($this->likeRepository->hasLike($photo, $user))
+        if (!$this->likeRepository->hasLike($photo, $user))
         {
             throw new LikeNotFoundException();
         }

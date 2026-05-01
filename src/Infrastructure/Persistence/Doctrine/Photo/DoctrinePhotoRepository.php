@@ -48,7 +48,7 @@ class DoctrinePhotoRepository extends ServiceEntityRepository
 
         if ($entity)
         {
-            PhotoMapper::toDomain($entity);
+            return PhotoMapper::toDomain($entity);
         }
 
         return null;

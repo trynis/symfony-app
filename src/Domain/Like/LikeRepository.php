@@ -31,7 +31,7 @@ class LikeRepository implements LikeRepositoryInterface
 
     public function hasLike(Photo $photo, User $user): bool
     {
-        return $this->doctrineLikeRepository->getLikes($photo, $user) > 0;
+        return count($this->doctrineLikeRepository->getLikes($photo, $user)) > 0;
     }
 
     public function createLike(Photo $photo, User $user): Like
@@ -39,8 +39,4 @@ class LikeRepository implements LikeRepositoryInterface
         return $this->doctrineLikeRepository->createLike($photo, $user);
     }
 
-    public function updatePhotoCounter(PhotoEntity $photo, int $increment): void
-    {
-        $this->doctrineLikeRepository->updatePhotoCounter($photo, $increment);
-    }
 }

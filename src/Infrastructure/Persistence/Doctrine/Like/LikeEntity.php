@@ -28,9 +28,15 @@ class LikeEntity
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    public function __construct()
+    public function __construct(?int $id = null)
     {
+        $this->id = $id;
         $this->createdAt = new \DateTime();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getUser(): UserEntity
