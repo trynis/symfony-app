@@ -62,18 +62,27 @@ final class DoctrineLikeRepository extends ServiceEntityRepository
         );
     }
 
-    public function hasUserLikedPhoto(PhotoEntity $photo, UserEntity $user): bool
-    {
-        $likes = $this->createQueryBuilder('l')
-            ->select('l.id')
+    public function findLikedPhotoIdsByUserAndPhotos(
+        UserEntity $user,
+        array $photoIds
+    ): array {
+        if ($photoIds === []) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('l')
+            ->select('IDENTITY(l.photo) AS photo_id')
             ->where('l.user = :user')
-            ->andWhere('l.photo = :photo')
+            ->andWhere('l.photo IN (:photoIds)')
             ->setParameter('user', $user)
-            ->setParameter('photo', $photo)
+            ->setParameter('photoIds', $photoIds)
             ->getQuery()
             ->getArrayResult();
 
-        return count($likes) > 0;
+        return array_map(
+            static fn(array $row) => (int) $row['photo_id'],
+            $rows
+        );
     }
 
     public function createLike(Photo $photo, User $user): Like

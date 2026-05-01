@@ -6,6 +6,7 @@ namespace App\UI\Http;
 
 use App\Infrastructure\Persistence\Doctrine\Like\DoctrineLikeRepository;
 use App\Infrastructure\Persistence\Doctrine\Photo\DoctrinePhotoRepository;
+use App\Infrastructure\Persistence\Doctrine\Photo\PhotoEntity;
 use App\Infrastructure\Persistence\Doctrine\User\UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,9 +34,17 @@ class HomeController extends AbstractController
             $currentUser = $em->getRepository(UserEntity::class)->find($userId);
 
             if ($currentUser) {
-                foreach ($photos as $photo) {
-                    $userLikes[$photo->getId()] = $likeRepository->hasUserLikedPhoto($photo, $currentUser);
-                }
+                $photoIds = array_map(
+                    static fn(PhotoEntity $photo) => $photo->getId(),
+                    $photos
+                );
+
+                $likedPhotoIds = $likeRepository->findLikedPhotoIdsByUserAndPhotos(
+                    $currentUser,
+                    $photoIds
+                );
+
+                $userLikes = array_fill_keys($likedPhotoIds, true);
             }
         }
 
