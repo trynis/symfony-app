@@ -9,6 +9,64 @@
             margin-top: 30px;
             justify-content: center;
         }
+
+        .filter-panel {
+            max-width: 1240px;
+            margin: 20px auto 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .filter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-field label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .filter-field input {
+            border: 1px solid #d3d3d3;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .filter-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .filter-btn.apply {
+            background: #667eea;
+            color: white;
+        }
+
+        .filter-btn.reset {
+            background: #efefef;
+            color: #333;
+        }
         
         .photo-card {
             background: white;
@@ -153,6 +211,48 @@
 {% endblock %}
 
 {% block body %}
+    <div class="filter-panel">
+        {{ form_start(filterForm, { method: 'get' }) }}
+            <div class="filter-grid">
+                <div class="filter-field">
+                    {{ form_label(filterForm.location, 'Location') }}
+                    {{ form_widget(filterForm.location, { attr: { placeholder: 'e.g. Iceland' } }) }}
+                    {{ form_errors(filterForm.location) }}
+                </div>
+                <div class="filter-field">
+                    {{ form_label(filterForm.camera, 'Camera') }}
+                    {{ form_widget(filterForm.camera, { attr: { placeholder: 'e.g. Sony A7' } }) }}
+                    {{ form_errors(filterForm.camera) }}
+                </div>
+                <div class="filter-field">
+                    {{ form_label(filterForm.description, 'Description') }}
+                    {{ form_widget(filterForm.description, { attr: { placeholder: 'Keywords in description' } }) }}
+                    {{ form_errors(filterForm.description) }}
+                </div>
+                <div class="filter-field">
+                    {{ form_label(filterForm.username, 'Username') }}
+                    {{ form_widget(filterForm.username, { attr: { placeholder: 'Author username' } }) }}
+                    {{ form_errors(filterForm.username) }}
+                </div>
+                <div class="filter-field">
+                    {{ form_label(filterForm.takenFrom, 'Taken from') }}
+                    {{ form_widget(filterForm.takenFrom) }}
+                    {{ form_errors(filterForm.takenFrom) }}
+                </div>
+                <div class="filter-field">
+                    {{ form_label(filterForm.takenTo, 'Taken to') }}
+                    {{ form_widget(filterForm.takenTo) }}
+                    {{ form_errors(filterForm.takenTo) }}
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="filter-btn apply">Apply filters</button>
+                <a href="{{ path('home') }}" class="filter-btn reset">Clear</a>
+            </div>
+        {{ form_end(filterForm) }}
+    </div>
+
     {% if photos|length > 0 %}
         <div class="photo-grid">
             {% for photo in photos %}
