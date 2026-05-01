@@ -34,6 +34,12 @@ class PhotoEntity
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $likeCounter = 0;
 
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $provider = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $externalPhotoId = null;
+
     #[ORM\ManyToOne(targetEntity: UserEntity::class, inversedBy: 'photos')]
     #[ORM\JoinColumn(nullable: false)]
     private UserEntity $user;
@@ -122,6 +128,28 @@ class PhotoEntity
     public function setLikeCounter(int $likeCounter): self
     {
         $this->likeCounter = $likeCounter;
+        return $this;
+    }
+
+    public function getProvider(): ?string
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?string $provider): self
+    {
+        $this->provider = $provider;
+        return $this;
+    }
+
+    public function getExternalPhotoId(): ?int
+    {
+        return $this->externalPhotoId;
+    }
+
+    public function setExternalPhotoId(?int $externalPhotoId): self
+    {
+        $this->externalPhotoId = $externalPhotoId;
         return $this;
     }
 }

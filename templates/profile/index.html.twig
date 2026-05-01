@@ -170,6 +170,10 @@
             font-weight: 600;
             cursor: pointer;
         }
+
+        .provider-import-form {
+            margin-top: 16px;
+        }
         
         .stat-item {
             text-align: center;
@@ -261,6 +265,11 @@
                 >
                 <p class="provider-token-help">This token will be used for importing your photos from provider "phoenix".</p>
                 <button type="submit" class="provider-token-button">Save token</button>
+            </form>
+
+            <form method="post" action="{{ path('profile_phoenix_import') }}" class="provider-import-form">
+                <input type="hidden" name="_token" value="{{ csrf_token('import_phoenix_photos') }}">
+                <button type="submit" class="provider-token-button">Import photos from Phoenix</button>
             </form>
         </div>
         
