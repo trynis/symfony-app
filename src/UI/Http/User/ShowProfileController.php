@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Http\User;
 
+use App\Infrastructure\Persistence\Doctrine\User\PhotoProviderCredentialEntity;
 use App\Infrastructure\Persistence\Doctrine\User\UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,8 +31,14 @@ class ShowProfileController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $phoenixCredential = $em->getRepository(PhotoProviderCredentialEntity::class)->findOneBy([
+            'user' => $user,
+            'provider' => 'phoenix',
+        ]);
+
         return $this->render('profile/index.html.twig', [
             'user' => $user,
+            'phoenixToken' => $phoenixCredential?->getToken(),
         ]);
     }
 }
