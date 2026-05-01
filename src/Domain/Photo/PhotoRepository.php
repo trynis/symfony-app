@@ -19,7 +19,7 @@ class PhotoRepository implements PhotoRepositoryInterface
     {
     }
 
-    public function getById(int $id): Photo
+    public function getById(int $id): ?Photo
     {
         return $this->doctrinePhotoRepository->getById($id);
     }
