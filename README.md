@@ -32,5 +32,5 @@ php bin/console cache:clear
 
 ### Running tests
 ```bash
-php bin/phpunit
+php vendor/phpunit/phpunit/phpunit --configuration phpunit.xml.dist
 ```
