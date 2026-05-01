@@ -15,7 +15,7 @@ use App\Infrastructure\Persistence\Doctrine\User\UserMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class DoctrineLikeRepository extends ServiceEntityRepository
+final class DoctrineLikeRepository extends ServiceEntityRepository implements LikeRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -38,11 +38,18 @@ final class DoctrineLikeRepository extends ServiceEntityRepository
         return $like ? LikeMapper::toDomain($like) : null;
     }
 
-    public function removeLike(Like $like): void
+    public function removeLike(Photo $photo, User $user): void
     {
+        $like = $this->getLike($photo, $user);
+
         $likeEntity = $this->find($like->id());
         $this->getEntityManager()->remove($likeEntity);
         $this->getEntityManager()->flush();
+    }
+
+    public function hasLike(Photo $photo, User $user): bool
+    {
+        return count($this->getLikes($photo, $user)) > 0;
     }
 
     public function getLikes(Photo $photo, User $user): array

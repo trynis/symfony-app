@@ -6,10 +6,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine\Photo;
 
 use App\Domain\Photo\Photo;
+use App\Domain\Photo\PhotoRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrinePhotoRepository extends ServiceEntityRepository
+class DoctrinePhotoRepository extends ServiceEntityRepository implements PhotoRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
